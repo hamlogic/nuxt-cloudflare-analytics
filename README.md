@@ -17,6 +17,7 @@ You can set environment variable `NODE_ENV` to `production` for testing in dev m
 modules: [
     ['nuxt-cloudflare-analytics', { 
       token: 'your-token', // Example 1a2b3v4a5er6ac7r8afd
+      async: true
   }],
 ]
 ```
