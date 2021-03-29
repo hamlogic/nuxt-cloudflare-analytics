@@ -1,0 +1,38 @@
+{
+  "name": "nuxt-cloudflare-analytics",
+  "version": "0.1.0",
+  "description": "Cloudflare Web Analytics Modules for NuxtJS",
+  "author": "Hamjs <hamknw@gmail.com>",
+  "files": [
+    "lib"
+  ],
+  "main": "lib/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "Vue",
+    "Nuxt",
+    "analytic",
+    "cloudflare",
+    "cloudflare analytic"
+  ],
+  "engines": {
+    "npm": ">= 4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devsourceid/nuxt-cloudflare-analytics.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/devsourceid/nuxt-cloudflare-analytics/issues"
+  },
+  "homepage": "https://github.com/devsourceid/nuxt-cloudflare-analytics#readme",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
