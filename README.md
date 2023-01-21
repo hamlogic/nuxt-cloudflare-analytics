@@ -4,14 +4,14 @@
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 
 Add Cloudflare Web Analytics to your Nuxt Project.
-The **@next** version of this module works with Nuxt 3, if you want to use nuxt 2, use v0.1.5
+The latest versions, above `1.0.8+` are made for Nuxt 3, if you want to use nuxt 2, use `0.1.5`
 
 **Note:** this modules is not enabled in dev mode.
 You can set environment variable `NODE_ENV` to `production` for testing in dev mode.
 
 ## Setup
 
-- Add `nuxt-cloudflare-analytics` dependency using yarn or npm to your project `npm i nuxt-cloudflare-analytics@next` or `yarn install nuxt-cloudflare-analytics@next`
+- Add `nuxt-cloudflare-analytics` dependency using yarn or npm to your project `npm i nuxt-cloudflare-analytics` or `yarn install nuxt-cloudflare-analytics`
 - Add `nuxt-cloudflare-analytics` to `modules` section of `nuxt.config.ts`
 
 ```ts
@@ -79,7 +79,6 @@ You can find token on Web Aalytics Page at Cloudflare Dashboard.
 // nuxt.config.ts
 {
   cloudflareAnalytics: {
-    // See below for more options
     token: 'your-token', // Example 1a2b3v4a5er6ac7r8afd
     proxyPath: false,
     customProxyPath: '/my-proxy'
