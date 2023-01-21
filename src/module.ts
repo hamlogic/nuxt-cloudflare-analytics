@@ -62,12 +62,6 @@ export default defineNuxtModule<ModuleOptions>({
 				getContents: () => virtualConfig,
 			}).dst
 
-			// Inject options via virtual template
-			nuxt.options.alias['#nuxt-cloudflare-analytics'] = [
-				`export const scriptPath = ${JSON.stringify(scriptPath)}`,
-				`export const token = ${JSON.stringify(options.token)}`,
-			].join('\n')
-
 			// Public runtime config
 			nuxt.options.runtimeConfig.public[configKey] = {
 				token: options.token,
