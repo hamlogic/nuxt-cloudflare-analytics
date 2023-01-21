@@ -49,20 +49,50 @@ You can find token on Web Aalytics Page at Cloudflare Dashboard.
 
 ### `scriptPath` (string | false | undefined)
 
-- (Optional), defaults to `/_ca/b.js`.
+- (Optional), defaults to `/_ca/b.js`. This is the `beacon.min.js` from cloudflare.
 - You can set it to `false` to not use a local script and instead use the CDN script (https://static.cloudflareinsights.com/beacon.min.js).
   This is not recommended though, since some browsers may not load this script otherwise.
-- You can set it to a custom path to use a local script. This **must** be a `.js` file inside your `public` folder. So if you have this file
+- You can set it to a custom path to define where your local script is. This **must** be a `.js` file inside your `public` folder. So if you have this file
   under `public/my/beacon.js`, you should set this option to `my/beacon.js`.
 
 ### `proxyPath` (string | false | undefined)
 
-- (Optional), defaults to `/api/_ca/p`.
-- A proxy endpoint, used to send data to Cloudflare.
-- You can set it to `false` to not use a proxy.
-  This is not recommended though, since some browsers may block the request otherwise.
-- You can set it to a custom path to use a proxy endpoint. This **must** start with `/api`.
-  under `api/my/proxy.js`, you should set this option to `my/proxy.js`.
+- (Optional), defaults to `false`.
+- You can set it to a custom path to generate a proxy nuxt server api endpoint. This **must** start with `/api`.
+  E.g. set `proxyPath` to `/api/_ca/p`, then the module will automatically
+  - Generate this endpoint
+  - Change the `scriptPath` to use this endpoint (as long as you don't set it to something own)
+- The automatically created proxy endpoint is used to send data to Cloudflare.
+  - Benefit: This avoids some browsers blocking this request.
+  - Downside: Depending where you host your page, cloudflare will take this country as the origin of the page click. So if you host your page in the US (e.g. vercel) but your visitor is from Germany, you will see the US as the origin of the click in your dashboard.
+- You can set it to `false` to not use a proxy and directly call cloudflare.
+  Be prepared that some browsers may block the request and you will not see any data.
+- If you have another solution for this, e.g. vercels rewrite config, set `proxyPath` to `false` and define a `customProxyPath` (see below).
+
+### `customProxyPath` (string | undefined)
+
+- (Optional), defaults to `undefined`. Only define this if you set `proxyPath` to `false`.
+- This is the path to your custom proxy endpoint, e.g. from vercels rewrite config.
+- e.g.
+
+```ts
+// nuxt.config.ts
+{
+  cloudflareAnalytics: {
+    // See below for more options
+    token: 'your-token', // Example 1a2b3v4a5er6ac7r8afd
+    proxyPath: false,
+    customProxyPath: '/my-proxy'
+  }
+}
+```
+
+```json
+// vercel.json
+{
+	"rewrites": [{ "source": "/my-proxy", "destination": "https://cloudflareinsights.com/cdn-cgi/rum" }]
+}
+```
 
 ## Contributors
 

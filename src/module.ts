@@ -9,10 +9,11 @@ export interface ModuleOptions {
 	token: string | undefined
 	scriptPath: string | false | undefined
 	proxyPath: string | false | undefined
+	customProxyPath: string | undefined
 }
 
 const scriptPathDefault = '/_ca/b.js'
-const proxyPathDefault = '/api/_ca/p'
+const proxyPathDefault = false
 
 export default defineNuxtModule<ModuleOptions>({
 	meta: {
@@ -27,6 +28,7 @@ export default defineNuxtModule<ModuleOptions>({
 		token: undefined,
 		scriptPath: scriptPathDefault,
 		proxyPath: proxyPathDefault,
+		customProxyPath: undefined,
 	},
 	setup(options, nuxt) {
 		if (options.addPlugin) {
@@ -90,7 +92,8 @@ export default defineNuxtModule<ModuleOptions>({
 				const file = await fsp.readFile(join(runtimeDir, '/public/beacon.min.mjs'), 'utf-8')
 
 				// Replace the original url with the proxy path
-				const newFile = proxyPath ? file.replace('https://cloudflareinsights.com/cdn-cgi/rum', proxyPath) : file
+				const newProxyPath = options.customProxyPath || proxyPath
+				const newFile = newProxyPath ? file.replace('https://cloudflareinsights.com/cdn-cgi/rum', newProxyPath) : file
 
 				// Write file to public dir of nuxt project
 				const newFilePath = join(nuxt.options.rootDir, '/public/', scriptPath)
