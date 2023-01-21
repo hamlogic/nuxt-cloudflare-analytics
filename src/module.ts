@@ -102,6 +102,9 @@ export default defineNuxtModule<ModuleOptions>({
 			// Nuxt 3 and Bridge - inject script on runtime
 			nuxt.hook('nitro:config', async config => {
 				await addBeaconFile()
+				config.externals = config.externals || {}
+				config.externals.inline = config.externals.inline || []
+				config.externals.inline.push(runtimeDir)
 				config.virtual = config.virtual || {}
 				config.virtual['#nuxt-cloudflare-analytics'] = virtualConfig
 				config.plugins = config.plugins || []
