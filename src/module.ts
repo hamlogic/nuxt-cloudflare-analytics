@@ -52,6 +52,12 @@ export default defineNuxtModule<ModuleOptions>({
 				return console.warn(`[${pluginName}]: No '${configKey}.token' option provided!`)
 			}
 
+			// Inject options via virtual template
+			nuxt.options.alias['#nuxt-cloudflare-analytics'] = [
+				`export const scriptPath = ${JSON.stringify(scriptPath)}`,
+				`export const token = ${JSON.stringify(options.token)}`,
+			].join('\n')
+
 			// Public runtime config
 			nuxt.options.runtimeConfig.public[configKey] = {
 				token: options.token,
@@ -93,10 +99,7 @@ export default defineNuxtModule<ModuleOptions>({
 			nuxt.hook('nitro:config', async config => {
 				await addBeaconFile()
 				config.virtual = config.virtual || {}
-				config.virtual['#nuxt-cloudflare-analytics'] = [
-					`export const scriptPath = ${JSON.stringify(scriptPath)}`,
-					`export const token = ${JSON.stringify(options.token)}`,
-				].join('\n')
+				config.virtual['#nuxt-cloudflare-analytics'] = nuxt.options.alias['#nuxt-cloudflare-analytics']
 				config.plugins = config.plugins || []
 				config.plugins.push(resolve(runtimeDir, 'nitro-plugin'))
 			})
