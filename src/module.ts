@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'url'
 import { promises as fsp } from 'fs'
 import { join, dirname } from 'path'
-import { defineNuxtModule, createResolver, addServerHandler } from '@nuxt/kit'
+import { defineNuxtModule, createResolver, addServerHandler, addTemplate } from '@nuxt/kit'
 import { pluginName, configKey } from './config'
 
 export interface ModuleOptions {
@@ -53,6 +53,16 @@ export default defineNuxtModule<ModuleOptions>({
 			}
 
 			// Inject options via virtual template
+			const virtualConfig = [
+				`export const scriptPath = ${JSON.stringify(scriptPath)}`,
+				`export const token = ${JSON.stringify(options.token)}`,
+			].join('\n')
+			nuxt.options.alias['#nuxt-cloudflare-analytics'] = addTemplate({
+				filename: 'nuxt-cloudflare-analytics.mjs',
+				getContents: () => virtualConfig,
+			}).dst
+
+			// Inject options via virtual template
 			nuxt.options.alias['#nuxt-cloudflare-analytics'] = [
 				`export const scriptPath = ${JSON.stringify(scriptPath)}`,
 				`export const token = ${JSON.stringify(options.token)}`,
@@ -99,7 +109,7 @@ export default defineNuxtModule<ModuleOptions>({
 			nuxt.hook('nitro:config', async config => {
 				await addBeaconFile()
 				config.virtual = config.virtual || {}
-				config.virtual['#nuxt-cloudflare-analytics'] = nuxt.options.alias['#nuxt-cloudflare-analytics']
+				config.virtual['#nuxt-cloudflare-analytics'] = virtualConfig
 				config.plugins = config.plugins || []
 				config.plugins.push(resolve(runtimeDir, 'nitro-plugin'))
 			})
