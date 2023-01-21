@@ -1,8 +1,7 @@
 import { fileURLToPath } from 'url'
 import { promises as fsp } from 'fs'
 import { join, dirname } from 'path'
-import { defu } from 'defu'
-import { defineNuxtModule, createResolver, addServerHandler, addTemplate } from '@nuxt/kit'
+import { defineNuxtModule, createResolver, addServerHandler } from '@nuxt/kit'
 import { pluginName, configKey } from './config'
 
 export interface ModuleOptions {
@@ -54,9 +53,9 @@ export default defineNuxtModule<ModuleOptions>({
 			}
 
 			// Public runtime config
-			nuxt.options.runtimeConfig.public[configKey] = defu(nuxt.options.runtimeConfig.public[configKey], {
+			nuxt.options.runtimeConfig.public[configKey] = {
 				token: options.token,
-			})
+			}
 
 			// Everything below is only needed in production
 			if (nuxt.options.dev) {
@@ -78,7 +77,7 @@ export default defineNuxtModule<ModuleOptions>({
 				}
 
 				// Read file from runtime dir
-				const file = await fsp.readFile(join(runtimeDir, '/public/beacon.min.js'), 'utf-8')
+				const file = await fsp.readFile(join(runtimeDir, '/public/beacon.min.mjs'), 'utf-8')
 
 				// Replace the original url with the proxy path
 				const newFile = proxyPath ? file.replace('https://cloudflareinsights.com/cdn-cgi/rum', proxyPath) : file
