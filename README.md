@@ -100,7 +100,7 @@ You can find token on Web Aalytics Page at Cloudflare Dashboard.
 
 ## License
 
-MIT © [Hamjs](https://hamjs.com)
+MIT © [Ham](https://hamlogic.art)
 
 <!-- Badges -->
 
